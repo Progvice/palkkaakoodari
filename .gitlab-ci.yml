@@ -1,0 +1,9 @@
+stages:
+  - test
+  - report
+  - build
+
+include:
+  - local: 'integration.yml'
+  - local: 'deployment.yml'
+  #- local: 'e2e.yml'

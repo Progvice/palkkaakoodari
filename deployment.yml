@@ -1,0 +1,15 @@
+build-container-image:
+  image: docker:latest
+  stage: build
+  before_script:
+    - apk --update add nodejs npm
+    - echo "$CI_JOB_TOKEN" | docker login -u "gitlab-ci-token" --password-stdin "$CI_REGISTRY"
+  services:
+    - name: docker:dind
+  script:
+    - printenv
+    - echo "Build package and container image..."
+    - docker build -t "$CI_REGISTRY_IMAGE:latest" .
+    - docker push "$CI_REGISTRY_IMAGE:latest"
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "master"'

@@ -1,0 +1,63 @@
+integrate:
+  image: docker:latest
+  stage: test
+  before_script:
+    - apk --update add nodejs npm
+  services:
+    - name: docker:dind
+  script:
+    # - printenv
+    - echo "Build & test frontend..."
+    - pwd
+    - ls -la
+    - cd frontend
+    - npm -v
+    - rm -rf node_modules package-lock.json
+    - npm cache clean --force
+    - npm install
+    - npm run lint
+    - npm run test
+    - echo "Copy test result to public folder"
+    - cd ..
+    - mkdir -p gitlab-pages
+    - ls -la
+    - mv frontend/reports/ gitlab-pages/frontend/
+    - echo "Build & test backend..."
+    - pwd
+    - ls -la
+    - cd backend
+    - npm -v
+    - rm -rf node_modules package-lock.json
+    - npm cache clean --force
+    - npm install
+    - npm run lint
+    - npm run test
+    - echo "Copy test result to public folder"
+    - cd ..
+    - mkdir -p gitlab-pages
+    - ls -la
+    - mv backend/reports/ gitlab-pages/backend/
+  artifacts:
+    paths:
+      - gitlab-pages/
+  rules:
+  - if: '$CI_JOB_STATUS == "failed"'
+  - if: '$CI_COMMIT_BRANCH == "dev"'
+
+pages:
+  stage: report
+  needs:
+    - job: integrate
+  script:
+    - pwd
+    - ls -la
+    - ls -la gitlab-pages/frontend
+    - ls -la gitlab-pages/backend
+    - mv gitlab-pages public
+    - ls -la public
+  artifacts:
+    paths:
+      - public
+  rules:
+  - if: '$CI_JOB_STATUS == "failed"'
+  - if: '$CI_COMMIT_BRANCH == "dev"'

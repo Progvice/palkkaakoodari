@@ -1,0 +1,27 @@
+all_in_one:
+  image: docker:latest
+  variables:
+    CI_DEBUG_SERVICES: "true"
+  before_script:
+    - apk --update add nodejs npm
+    - echo "$CI_JOB_TOKEN" | docker login -u "gitlab-ci-token" --password-stdin "$CI_REGISTRY"
+    - docker pull $CI_REGISTRY_IMAGE:latest || true
+    - echo "Create e2e network to "inject" to docker-compose..."
+    - docker network create e2e || true
+  services:
+    - name: docker:dind
+  script:
+    - echo "Starting containers..."
+    # Build containers and start them.
+    # All container will be up and started in dependency order.
+    # All dependent container waiting for the container be healthy.
+    - docker-compose up -d
+    # Print containers ans its status
+    - docker-compose ps
+    # Run tests inside the running playwright-tests-container
+    - docker exec playwright-tests sh -c "rm -rf node_modules && rm -rf package-lock.json && pwd && ls -al && npm install && npx playwright install-deps && npm run test" 
+  after_script:
+    - echo "Shutting down containers..."
+    - docker-compose down
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "master"'
