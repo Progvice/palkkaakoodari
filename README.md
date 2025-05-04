@@ -1,4 +1,10 @@
-# Palkkaa koodari (Full Stack App with React.js, TypeScript, Express.js and TypeORM)
+# Palkkaakoodari (Full Stack App with React.js, TypeScript, Express.js and TypeORM)
+
+Frontend is built using Vite react-ts, React Router and Tanstack Query.
+
+Backend is built using Express.js (with Typescript) and TypeORM. TypeORM is used
+to manage database data. Project is using Postgres as database engine.
+
 
 ### Build up database with Docker
 
