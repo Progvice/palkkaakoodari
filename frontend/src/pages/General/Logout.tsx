@@ -1,10 +1,10 @@
 import { Navigate } from "react-router-dom";
-import { logout } from "../api/auth";
+import { logout } from "../../api/auth";
 import { useQuery } from "@tanstack/react-query";
-import { pages } from "./pages";
-import { useAuth } from "../context/auth.context";
+import { pages } from "../pages";
+import { useAuth } from "../../context/auth.context";
 import { useEffect } from "react";
-import { useLang } from "../context/lang.context";
+import { useLang } from "../../context/lang.context";
 import { toast } from "react-toastify";
 
 const LogoutPage = () => {

@@ -1,17 +1,17 @@
 import { useState } from "react";
-import { useLang } from "../context/lang.context";
-import AccountActions from "../components/layouts/AccountActions";
-import Input from "../components/general/Input";
-import Button from "../components/general/Button";
+import { useLang } from "../../context/lang.context";
+import AccountActions from "../../components/layouts/AccountActions";
+import Input from "../../components/general/Input";
+import Button from "../../components/general/Button";
 import { PlusIcon } from "lucide-react";
 import { debounce } from "lodash";
-import useSearchEmployees from "../hooks/useSearchEmployee";
-import withAuthCheck from "../components/middleware/AuthCheck";
+import useSearchEmployees from "../../hooks/useSearchEmployee";
+import withAuthCheck from "../../components/middleware/AuthCheck";
 import { useQuery } from "@tanstack/react-query";
-import { getEmployees } from "../api/auth/employees";
-import { useAuth } from "../context/auth.context";
-import EmployeeList from "../components/EmployeeList";
-import Loading from "../components/general/Loading";
+import { getEmployees } from "../../api/auth/employees";
+import { useAuth } from "../../context/auth.context";
+import EmployeeList from "../../components/EmployeeList";
+import Loading from "../../components/general/Loading";
 
 const Employees = () => {
 

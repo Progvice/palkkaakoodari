@@ -1,4 +1,4 @@
-import { useLang } from "../context/lang.context";
+import { useLang } from "../../context/lang.context";
 
 
 const FourOFour = () => {

@@ -1,17 +1,14 @@
 import { useState } from "react";
-import Carousel from "../components/Carousel";
-import type { CarouselImg } from "../components/Carousel";
-import ProgressSteps from "../components/ProgressSteps";
-import { useLang } from "../context/lang.context";
-import type { StepProps } from "../components/ProgressSteps";
-import Button from "../components/general/Button";
-import { useLocation } from "react-router-dom";
-import { toast } from "react-toastify";
+import Carousel from "../../components/Carousel";
+import type { CarouselImg } from "../../components/Carousel";
+import ProgressSteps from "../../components/ProgressSteps";
+import { useLang } from "../../context/lang.context";
+import type { StepProps } from "../../components/ProgressSteps";
+import Button from "../../components/general/Button";
 
 const HomePage = () => {
 
   const {t} = useLang();
-  const location = useLocation();
 
   const [role, setRole] = useState<"seller"|"buyer">("seller");
 

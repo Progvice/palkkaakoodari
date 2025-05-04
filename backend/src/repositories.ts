@@ -49,21 +49,6 @@ export const getRepositories = async (): Promise<Repositories> => {
   return repositories;
 };
 
-export const initDatabase = async () => {
-  await getRepositories();
-  const rolesToAdd: Role[] = [roles.buyer, roles.seller, roles.buyerAndSeller, roles.admin];
-  // Fetch roles from db
-  const rolesInDatabase = new Map<number, Role>();
-  (await repositories.role.createQueryBuilder()
-    .where("id BETWEEN 1 and 4")
-    .getMany()).forEach(
-      role => rolesInDatabase.set(role.id, role)
-    );
-
-  // Add missing ones to database
-  await repositories.role.save(rolesToAdd.filter(role => !rolesInDatabase.has(role.id)));
-};
-
 /**
  * Close all connection if initialized.
  * Used in tests.

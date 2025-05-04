@@ -1,12 +1,12 @@
 import { useState, FormEvent, useEffect } from "react";
-import Input from "../components/general/Input";
-import { login } from "../api/auth";
+import Input from "../../components/general/Input";
+import { login } from "../../api/auth";
 import { toast } from "react-toastify";
-import { useAuth } from "../context/auth.context";
-import { useLang } from "../context/lang.context";
-import Button from "../components/general/Button";
-import Link from "../components/general/Link";
-import { pages } from "./pages";
+import { useAuth } from "../../context/auth.context";
+import { useLang } from "../../context/lang.context";
+import Button from "../../components/general/Button";
+import Link from "../../components/general/Link";
+import { pages } from "../pages";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const LoginPage = () => {

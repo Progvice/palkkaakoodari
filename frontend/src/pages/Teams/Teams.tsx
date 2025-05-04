@@ -1,12 +1,12 @@
 import { useState } from "react";
-import AccountActions from "../components/layouts/AccountActions";
-import withAuthCheck from "../components/middleware/AuthCheck";
-import { useLang } from "../context/lang.context";
-import useSearchTeams from "../hooks/useSearchTeams";
-import Input from "../components/general/Input";
-import Button from "../components/general/Button";
+import AccountActions from "../../components/layouts/AccountActions";
+import withAuthCheck from "../../components/middleware/AuthCheck";
+import { useLang } from "../../context/lang.context";
+import useSearchTeams from "../../hooks/useSearchTeams";
+import Input from "../../components/general/Input";
+import Button from "../../components/general/Button";
 import { PlusIcon } from "lucide-react";
-import SearchTeams from "../components/search/SearchTeams";
+import SearchTeams from "../../components/search/SearchTeams";
 import { debounce } from "lodash";
 
 const Teams = () => {

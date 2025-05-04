@@ -1,13 +1,13 @@
 import { useParams } from "react-router-dom";
-import AccountActions from "../components/layouts/AccountActions";
+import AccountActions from "../../components/layouts/AccountActions";
 import { useQuery } from "@tanstack/react-query";
-import queryKeys from "../constants/queryKeys";
-import { getTeam } from "../api/auth/teams";
-import Loading from "../components/general/Loading";
-import { Team } from "../types";
-import { useLang } from "../context/lang.context";
-import withAuthCheck from "../components/middleware/AuthCheck";
-import { useAuth } from "../context/auth.context";
+import queryKeys from "../../constants/queryKeys";
+import { getTeam } from "../../api/auth/teams";
+import Loading from "../../components/general/Loading";
+import { Team } from "../../types";
+import { useLang } from "../../context/lang.context";
+import withAuthCheck from "../../components/middleware/AuthCheck";
+import { useAuth } from "../../context/auth.context";
 
 const SingleTeam = () => {
   const params = useParams();

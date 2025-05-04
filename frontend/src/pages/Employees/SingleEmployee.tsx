@@ -1,14 +1,14 @@
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import queryKeys from "../constants/queryKeys";
-import { getEmployee } from "../api/auth/employees";
-import Loading from "../components/general/Loading";
-import withAuthCheck from "../components/middleware/AuthCheck";
-import AccountActions from "../components/layouts/AccountActions";
-import { useLang } from "../context/lang.context";
-import { useAuth } from "../context/auth.context";
-import { Employee } from "../types";
-import EmployeeForm from "../components/forms/EmployeeForm";
+import queryKeys from "../../constants/queryKeys";
+import { getEmployee } from "../../api/auth/employees";
+import Loading from "../../components/general/Loading";
+import withAuthCheck from "../../components/middleware/AuthCheck";
+import AccountActions from "../../components/layouts/AccountActions";
+import { useLang } from "../../context/lang.context";
+import { useAuth } from "../../context/auth.context";
+import { Employee } from "../../types";
+import EmployeeForm from "../../components/forms/EmployeeForm";
 
 const SingleEmployee = () => {
   const params = useParams();
