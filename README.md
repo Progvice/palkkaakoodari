@@ -1,14 +1,5 @@
 # Palkkaa koodari (Full Stack App with React.js, TypeScript, Express.js and TypeORM)
 
-## Getting started
-
-### Get source code
-
-```shell
-git clone git@gitlab.com:buutti_ta_jkl_2025_green/palkkaakoodari.git
-cd palkkaakoodari
-```
-
 ### Build up database with Docker
 
 In the root there is a [`docker-compose.yml`](./docker-compose.yml) description with 3 services.
