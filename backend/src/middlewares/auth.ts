@@ -6,7 +6,7 @@ export const authMiddleWare = async (req: Request, res: Response, next: NextFunc
   const auth = await runAuth(req);
 
   if (!auth.status) {
-    res.status(403).json({
+    res.status(401).json({
       status: false,
       msg: "sessionexpired"
     });

@@ -40,10 +40,14 @@ export function verifyToken(token: string, secret: string) {
   }
 }
 
-export function getAccountId(token: string, secret: string) : boolean | string {
+export function getAccountId(token: string, secret: string) : boolean | number {
   try {
     const decryptedToken = jwt.verify(token, secret);
-    return typeof decryptedToken === "string" ? false : decryptedToken?.accountId;
+
+    if (typeof decryptedToken === "string") return false;
+    if (isNaN(Number(decryptedToken?.accountId))) return false;
+
+    return Number(decryptedToken?.accountId);
   } catch(err) {
     console.log(err);
     return false;

@@ -87,12 +87,11 @@ export const createAccessToken = async (req: Request, refreshToken: string): Pro
 
     const finalUserData = {
       accountId: userData.id,
-      email: userData.email,
       role: userData.role
     };
 
     const token = jwt.sign(finalUserData, accessSecret, {
-      expiresIn: "5s"
+      expiresIn: "15m"
     });
 
     return {

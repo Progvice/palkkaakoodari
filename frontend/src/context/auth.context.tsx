@@ -2,6 +2,8 @@ import { createContext, useState, useContext, ReactElement, useEffect } from "re
 import { AuthAccount } from "../types";
 import { fetchAccessToken } from "../api/auth";
 import { useLocation } from "react-router-dom";
+import parseJwt from "../utils/jwtParse";
+import { useQuery } from "@tanstack/react-query";
 
 interface AuthContextType {
   account: AuthAccount | undefined | null;
@@ -10,6 +12,8 @@ interface AuthContextType {
   setAccountInitialized: (val: boolean) => void;
   token: string | null | undefined;
   setToken: (token: string | null) => void;
+  expirationTime: number | undefined,
+  setExpirationTime: (time: number) => void
 }
 
 // Create Auth Context
@@ -19,52 +23,49 @@ export const AuthProvider : React.FC<{children: ReactElement}> = ({ children }) 
   const [accountInitialized, setAccountInitialized] = useState<boolean>(false);
   const [account, setAccount] = useState<AuthAccount|undefined|null>();
   const [token, setToken] = useState<string|null|undefined>();
+  const [expirationTime, setExpirationTime] = useState<number|undefined>();
 
   const location = useLocation();
 
+  const {data: tokenData, refetch: refetchAccessToken} = useQuery({
+    queryFn: async () => await fetchAccessToken(),
+    queryKey: ['accesstoken'],
+    enabled: false
+  });
+
   useEffect(() => {
-    setAccountInitialized((prev) => {
-      if (prev) return true; // If already initialized, do nothing
+    const lsToken = localStorage.getItem("token");
+    const lsAccount = localStorage.getItem("account");
 
-      const lsAccount : string | null = localStorage.getItem("account");
-      if (lsAccount === null) return true;
+    if (!lsToken || !lsAccount) return;
 
-      const lsParsedAccount: AuthAccount = JSON.parse(lsAccount);
-      setAccount(lsParsedAccount);
+    setToken(lsToken);
+    setAccount(JSON.parse(lsAccount) as AuthAccount);
 
-      return true;
-    });
-
-    fetchAccessToken().then((res) => {
-      if (res === undefined) return;
-      if (res?.token) {
-        setToken(res.token);
-        localStorage.setItem("token", res.token);
-      }
-      if (!res?.status) {
-        setAccount(null);
-        setAccountInitialized(false);
-        setToken(null);
-        localStorage.removeItem("token");
-        localStorage.removeItem("account");
-      }
-    });
   }, []);
 
   useEffect(() => {
 
-  }, [location])
+    if (!expirationTime) return;
+    if (Math.floor(Date.now() / 1000) >= expirationTime) refetchAccessToken();
+
+  }, [location, expirationTime, refetchAccessToken]);
 
   useEffect(() => {
-    if (account) localStorage.setItem("account", JSON.stringify(account));
-  }, [account])
+    if (!token) return;
+    if (!localStorage.getItem("token")) localStorage.setItem("token", token);
+    const parsedToken = parseJwt(token);
+    // Check that parsed token contains exp and check that it is number and not NaN
+    if (parsedToken?.exp && (!isNaN(Number(parsedToken?.exp)))) setExpirationTime(Number(parsedToken.exp));
+  }, [token]);
 
   useEffect(() => {
-    if (token) localStorage.setItem("token", token);
-  }, [token])
+    if (!tokenData) return;
+    if ('token' in tokenData) setToken(tokenData['token']);
+  }, [tokenData]);
 
   return (
-    <AuthContext.Provider value={{ account, setAccount, accountInitialized, setAccountInitialized, token, setToken}}>
+    <AuthContext.Provider value={{ account, setAccount, accountInitialized, setAccountInitialized, token, setToken, expirationTime, setExpirationTime}}>
       {children}
     </AuthContext.Provider>
   );

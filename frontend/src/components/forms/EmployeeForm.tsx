@@ -8,7 +8,6 @@ import Textarea from "../general/Textarea";
 import TagPicker from "../TagPicker";
 import { Tag } from "../../types";
 import { modifyEmployee } from "../../api/auth/employees";
-import { toast } from "react-toastify";
 import { useQuery } from "@tanstack/react-query";
 import queryKeys from "../../constants/queryKeys";
 
@@ -41,7 +40,9 @@ const EmployeeForm : React.FC<EmployeeFormType> = (props) => {
   }, [updatedEmployee])
 
   return (
-    <form className="w-full flex flex-row flex-wrap" onSubmit={() => {
+    <form className="w-full flex flex-row flex-wrap" onSubmit={(e) => {
+      e.preventDefault();
+
       const updatedEmployee = {
         ...employee,
         firstName: firstName,
@@ -50,6 +51,9 @@ const EmployeeForm : React.FC<EmployeeFormType> = (props) => {
         description: description,
         tags: tags
       }
+
+      console.log(updatedEmployee);
+
       setEmployee(updatedEmployee);
 
       // if (method === 'insert') insertEmployee(e);

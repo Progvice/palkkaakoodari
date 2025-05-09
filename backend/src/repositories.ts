@@ -10,14 +10,14 @@ import { Team } from "./entity/Team";
 import { Tag } from "./entity/Tag";
 import { Transaction } from "./entity/Transaction";
 
-let repositories: Repositories | null = null;
-
-const roles = {
-  buyer: { id: 1, name: "BUYER" },
-  seller: { id: 3, name: "SELLER" },
-  buyerAndSeller: { id: 3, name: "BUYER+SELLER" },
-  admin: { id: 4, name: "ADMIN" },
+const readOnlyFields: Record<string, string[]> = {
+  employee: ['uuid', 'accountId', 'tags']
 };
+
+type UpdateableRepositoryTypes = {} | Partial<Employee>;
+type UpdateableRepositories = 'employee' | 'team';
+
+let repositories: Repositories | null = null;
 
 export const getRepositories = async (): Promise<Repositories> => {
   if (repositories) {
@@ -36,6 +36,7 @@ export const getRepositories = async (): Promise<Repositories> => {
   await postgresConnection.initialize();
 
   repositories = {
+    dataSource: postgresConnection,
     account: postgresConnection.getRepository(Account),
     agreement: postgresConnection.getRepository(Agreement),
     employee: postgresConnection.getRepository(Employee),
@@ -47,6 +48,27 @@ export const getRepositories = async (): Promise<Repositories> => {
   };
 
   return repositories;
+};
+
+
+export const getUpdateableFields = (
+  repository: UpdateableRepositories,
+  data: Record<string, any>
+): UpdateableRepositoryTypes => {
+  if (!(repository in readOnlyFields)) {
+    console.error('getUpdateableFields repository was invalid');
+    return {}
+  };
+
+  const readOnly = new Set(readOnlyFields[repository]);
+  const updateable: Record<string, any> = {};
+
+  for (const key in data) {
+    if (readOnly.has(key)) continue;
+    updateable[key] = data[key];
+  }
+
+  return updateable;
 };
 
 /**

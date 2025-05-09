@@ -2,7 +2,7 @@ import type { Account } from "./entity/Account";
 import type { Agreement } from "./entity/Agreement";
 import type { Employee } from "./entity/Employee";
 import type { PriceSuggestion } from "./entity/PriceSuggestion";
-import type { Repository } from "typeorm";
+import type { DataSource, Repository } from "typeorm";
 import type { Role } from "./entity/Role";
 import type { Tag } from "./entity/Tag";
 import type { Team } from "./entity/Team";
@@ -15,6 +15,7 @@ import { Request } from "express";
  * Helps maintain type safety and scalability.
  */
 export type Repositories = {
+  dataSource: DataSource,
   account: Repository<Account>;
   agreement: Repository<Agreement>;
   employee: Repository<Employee>;

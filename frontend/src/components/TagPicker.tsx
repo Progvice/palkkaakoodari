@@ -42,7 +42,7 @@ const TagPicker: React.FC<TagPickerType> = (props) => {
             {employeeTags.length > 0 ? employeeTags.map((tag, index) => {
               return <PickableTag type="remove" tag={tag} key={index} text={tag.name} onClick={() => {
                 setEmployeeTags(
-                  employeeTags.filter((t) => t.id !== tag.id)
+                  employeeTags.filter((removableTag) => removableTag.id !== tag.id)
                 );
               }}/>
             }) : null}
