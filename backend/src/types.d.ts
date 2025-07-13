@@ -51,3 +51,8 @@ export interface AuthObject {
   msg: string,
   token?: string
 };
+
+export type ServiceRespond = {
+  status: boolean,
+  msg?: string,
+}

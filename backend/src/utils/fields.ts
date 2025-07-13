@@ -1,17 +1,30 @@
 import { Request } from "express";
 
-export const requiredFields = async (req: Request, requiredFields: string[]) => {
-  let missingFields = [];
-  for (const field of requiredFields) {
-    if (!(field in req.body)) {
-      missingFields.push(field);
-    }
-  }
+export function requiredFields<T>
+  (data: Partial<T>, requiredFields: string[]) : {status: boolean, missingFields: string[]} {
+
+  const missingFields = requiredFields.filter(field => !(field in data));
+
   return {
-    status: missingFields.length < 1 ? true : false,
-    fields: missingFields
+    status: missingFields.length === 0,
+    missingFields,
   };
 };
+
+export function filterFields<T>(
+  data: T,
+  fields: string[]
+): Partial<T> {
+  const result = {} as Partial<T>;
+
+  for (const key in data) {
+    if (fields.includes(key)) {
+      result[key] = data[key];
+    }
+  }
+
+  return result;
+}
 
 /**
  * Pick properties added by key-params to a new Object.

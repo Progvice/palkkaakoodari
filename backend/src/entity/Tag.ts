@@ -15,4 +15,10 @@ export class Tag {
   @ManyToMany(() => Employee, employee => employee.tags)
   employees: Employee[];
 
+  constructor(tag?: Partial<Tag>) {
+    this.name = tag?.name ?? "";
+    this.type = tag?.type ?? "";
+    this.employees = tag?.employees ?? [];
+  }
+
 }

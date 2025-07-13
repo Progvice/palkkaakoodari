@@ -5,6 +5,7 @@ import { LoadRoutes } from "./routes";
 import dotenv from "dotenv";
 import { log } from "console";
 import cookieParser from "cookie-parser";
+import { errorMiddleware } from "./middlewares/error";
 
 dotenv.config();
 
@@ -20,6 +21,8 @@ const init = async () => {
   } catch (error) {
     log("Initialization Error", error);
   }
+
+  app.use(errorMiddleware);
 
   setupHTTP(app);
 };

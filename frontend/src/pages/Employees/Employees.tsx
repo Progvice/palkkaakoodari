@@ -12,12 +12,16 @@ import { getEmployees } from "../../api/auth/employees";
 import { useAuth } from "../../context/auth.context";
 import EmployeeList from "../../components/EmployeeList";
 import Loading from "../../components/general/Loading";
+import { useDialog } from "../../context/dialog.context";
+import NewEmployeeDialog from "../../components/dialogs/NewEmployeeDialog";
+import Dialog from "../../components/general/Dialog";
 
 const Employees = () => {
 
   const [searchVal, setSearchVal] = useState<string>("");
   const {t} = useLang();
   const auth = useAuth();
+  const {openDialog} = useDialog();
   const {data: employees} = useQuery({
     queryKey: ['employees', auth?.account?.uuid],
     queryFn: async () => await getEmployees()
@@ -26,7 +30,7 @@ const Employees = () => {
   const { searchVisible, data: employeeSearchData, isLoading, setSearchVisible } = useSearchEmployees(searchVal);
 
   const SearchBar = <Input onClick={() => setSearchVisible(!searchVisible)} className={{input: "my-0"}} field={t("searchUsers")} onChange={debounce(setSearchVal, 800)}/>
-  const customBtn = <Button onClick={() => {}}>{t("addEmployee")}&nbsp;&nbsp;<PlusIcon size={16}/></Button>
+  const customBtn = <Button onClick={() => openDialog(<Dialog component={<NewEmployeeDialog/>}/>)}>{t("addEmployee")}&nbsp;&nbsp;<PlusIcon size={16}/></Button>
 
   return (
     <AccountActions searchBar={SearchBar} customButton={customBtn}>

@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, Index, Generated, ManyToMany, OneToOne, JoinTable } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, Index, Generated, ManyToMany, ManyToOne, JoinTable } from "typeorm";
 import { Account } from "./Account";
 import { Tag } from "./Tag";
 @Entity()
@@ -33,12 +33,19 @@ export class Employee {
   @Column({ type: "varchar", length: 255 })
     skillLevel: string;
 
-  @OneToOne(() => Account, (account) => account.employees)
-    account: Account;
+  @ManyToOne(() => Account, (account) => account.employees)
+  account: Account;
 
   @ManyToMany(() => Tag, tag => tag.employees)
   @JoinTable() // This decorator only goes on ONE side — the owning side
   tags: Tag[];
 }
 
+export const employeeRequiredFields = [
+  'firstName',
+  'lastName',
+  'hourlyRate'
+];
+
+export const employeeModifiable = ['firstName', 'lastName', 'priceNegotiable', 'hourlyRate', 'description', 'skillLevel'];
 

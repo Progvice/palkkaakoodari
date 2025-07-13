@@ -6,8 +6,6 @@ import { v4 as uuidv4 } from "uuid";
 import argon2 from "argon2";
 import { getRepositories } from "../repositories";
 import { requiredFields } from "../utils/fields";
-import { typeOrmErrorHandler } from "../utils/db";
-import { settings } from "./login";
 
 export const register = async (req: Request, res: Response, next: NextFunction) => {
 
@@ -39,19 +37,5 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
     roleId: 1
   };
 
-  try {
-    await account.createQueryBuilder()
-      .insert()
-      .into(Account)
-      .values(finalAccount)
-      .execute();
 
-    res
-      .status(200)
-      .json({ token: generateToken(settings.jwtSecret, { email: finalAccount.email }), account: finalAccount })
-      .send();
-  }
-  catch (error) {
-    typeOrmErrorHandler(res, error, "Cannot create account");
-  }
 };

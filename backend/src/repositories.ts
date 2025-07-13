@@ -10,13 +10,6 @@ import { Team } from "./entity/Team";
 import { Tag } from "./entity/Tag";
 import { Transaction } from "./entity/Transaction";
 
-const readOnlyFields: Record<string, string[]> = {
-  employee: ['uuid', 'accountId', 'tags']
-};
-
-type UpdateableRepositoryTypes = {} | Partial<Employee>;
-type UpdateableRepositories = 'employee' | 'team';
-
 let repositories: Repositories | null = null;
 
 export const getRepositories = async (): Promise<Repositories> => {
@@ -48,27 +41,6 @@ export const getRepositories = async (): Promise<Repositories> => {
   };
 
   return repositories;
-};
-
-
-export const getUpdateableFields = (
-  repository: UpdateableRepositories,
-  data: Record<string, any>
-): UpdateableRepositoryTypes => {
-  if (!(repository in readOnlyFields)) {
-    console.error('getUpdateableFields repository was invalid');
-    return {}
-  };
-
-  const readOnly = new Set(readOnlyFields[repository]);
-  const updateable: Record<string, any> = {};
-
-  for (const key in data) {
-    if (readOnly.has(key)) continue;
-    updateable[key] = data[key];
-  }
-
-  return updateable;
 };
 
 /**

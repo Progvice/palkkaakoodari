@@ -37,26 +37,3 @@ export const connectPostgres = (): DS | boolean => {
   });
 };
 
-export const typeOrmErrorHandler = (res: Response, error: any, additionalMessage: string = "") => {
-  console.error(error);
-  const errorCode = error?.code;
-
-  if (errorCode === "23505") {
-    res
-      .status(400)
-      .json({
-        message: additionalMessage,
-        error: "Duplicate entry"
-      })
-      .send();
-    return;
-  }
-
-  res
-    .status(500)
-    .json({
-      message: additionalMessage,
-      error: "Unknown TypeORM error"
-    })
-    .send();
-};

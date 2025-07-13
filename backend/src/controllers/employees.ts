@@ -1,28 +1,32 @@
 
 import { Request, Response, NextFunction } from "express";
-import { Employee } from "../entity/Employee";
+import { Employee, employeeRequiredFields } from "../entity/Employee";
 import { Tag } from "../entity/Tag";
 import { getRepositories } from "../repositories";
 import { AuthenticatedRequest, AuthObject } from "../types";
-import { getAccountId, verifyToken } from "../utils/jwt";
-import { getUpdateableFields } from "../utils/updateableFields";
+import { getAccountId } from "../utils/jwt";
+import EmployeeService from "../services/EmployeeService";
+import { filterFields } from "../utils/fields";
+import { employeeModifiable } from "../entity/Employee";
 
 export const createEmployees = async (req: Request, res: Response, next: NextFunction) => {
-  const formData: Partial<Employee> = req.body;
 
+  const employeeFields = filterFields(req.body, employeeModifiable);
+  const employeeService = new EmployeeService();
 
-  const { employee: employeeRepo } = await getRepositories();
-  const entityData: Partial<Employee> = employeeRepo.create(formData);
-  const result = await employeeRepo.createQueryBuilder()
-    .insert()
-    .into(Employee)
-    .values(entityData)
-    .returning("*")
-    .execute();
-  res
-    .status(201) // Created
-    .json(result.generatedMaps[0])
-    ;
+  const accountId = res.locals.accountId as number;
+
+  try {
+    const result = await employeeService.insertEmployee(employeeFields, accountId);
+    res.status(201).json({
+      status: true,
+      data: result
+    });
+    return;
+  }
+  catch (err: unknown) {
+    next(err);
+  }
 };
 
 export const deleteEmployees = async (req: Request, res: Response, next: NextFunction) => {
@@ -42,40 +46,26 @@ export const deleteEmployees = async (req: Request, res: Response, next: NextFun
     ;
 };
 
-export const modifyEmployees = async (req: Request, res: Response) => {
-  const auth = res.locals?.auth as AuthObject;
-  const accountId = getAccountId(auth.token, process.env.JWT_ACCESS_SECRET);
+export const modifyEmployees = async (req: Request, res: Response, next: NextFunction) => {
+  const accountId = res.locals.accountId;
+  const uuid = req.params.uuid;
 
-  if (typeof accountId === 'boolean') {
-    res.status(401).json({
-      status: false,
-      message: 'Invalid JWT'
+  const employee : Partial<Employee> = filterFields<Employee>(req.body, employeeModifiable);
+
+  const employeeService = new EmployeeService();
+
+  try {
+    const employeeUpdate = await employeeService.modifyEmployee(uuid, employee, accountId);
+    res.status(200).json({
+      status: true,
+      message: 'updatesuccess',
+      data: employeeUpdate
     });
     return;
   }
-  const uuid = req.params.uuid;
-
-  const updatedEmployee : Partial<Employee> = getUpdateableFields('employee', req.body);
-  const employeeTags : Tag[] | null = req.body?.tags ? req.body.tags : null;
-
-  const { employee } = await getRepositories();
-
-  const currentEmployeeTags = employee.findOne({
-    where: {
-      uuid: uuid,
-      accountId: accountId
-    }
-  });
-
-  await employee.createQueryBuilder()
-    .update(Employee)
-    .set(updatedEmployee)
-    .where("uuid = :uuid", { uuid: uuid })
-    .andWhere("accountId = :accountId", {accountId: accountId})
-    .execute();
-  res
-    .status(200)
-    .json({ message: "MODIFIED" });
+  catch(err) {
+    next(err);
+  }
 };
 
 export const getEmployees = async (req: Request, res: Response) => {

@@ -7,6 +7,7 @@ import { BrowserRouter } from 'react-router-dom'
 import { AuthProvider } from './context/auth.context.tsx'
 import { LangProvider } from './context/lang.context.tsx'
 import { EmployeeProvider } from './context/employee.context.tsx'
+import { DialogProvider } from './context/dialog.context.tsx'
 
 const queryClient = new QueryClient();
 
@@ -17,7 +18,9 @@ createRoot(document.getElementById('root')!).render(
         <BrowserRouter>
           <AuthProvider>
             <EmployeeProvider>
-              <App />
+              <DialogProvider>
+                <App />
+              </DialogProvider>
             </EmployeeProvider>
           </AuthProvider>
         </BrowserRouter>
