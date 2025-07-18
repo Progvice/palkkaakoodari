@@ -1,0 +1,2 @@
+docker stop palkkaakoodari_postgres
+docker stop palkkaakoodari_backend

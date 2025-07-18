@@ -1,4 +1,3 @@
-import type { Response } from "express";
 import { DataSource } from "typeorm";
 import type { DataSource as DS } from "typeorm";
 

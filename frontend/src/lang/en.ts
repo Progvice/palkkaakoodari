@@ -53,5 +53,11 @@ export default {
   noSkillsPicked: "No skills picked",
   searchedTags: "Searched skills",
   noTagsSearched: "No skills searched",
-  noMoreSkillsToSelect: "No more available skills"
+  noMoreSkillsToSelect: "No more available skills",
+  invalidEmail: "Invalid email address",
+  passwordMinLength: "Password has to be at least [$1] characters long",
+  passwordCapitalLetter: "Password should have one capital letter",
+  passwordLowercaseLetter: "Password should have one lowercase letter",
+  passwordSpecialCharacter: "Password should have one special character",
+  businessIdInvalid: "Business ID is invalid"
 };

@@ -1,14 +1,23 @@
 import { connectPostgres } from "./utils/db";
 import { type DataSource } from "typeorm";
 import type { Repositories } from "./types";
-import { Account } from "./entity/Account";
-import { Agreement } from "./entity/Agreement";
-import { Employee } from "./entity/Employee";
-import { PriceSuggestion } from "./entity/PriceSuggestion";
-import { Role } from "./entity/Role";
-import { Team } from "./entity/Team";
-import { Tag } from "./entity/Tag";
-import { Transaction } from "./entity/Transaction";
+
+import { Account }
+  from "./entities/account/account.entity";
+import { Agreement }
+  from "./entities/agreement/agreement.entity";
+import { Employee }
+  from "./entities/employee/employee.entity";
+import { PriceSuggestion }
+  from "./entities/pricesuggestion/pricesuggestion.entity";
+import { Role }
+  from "./entities/role/role.entity";
+import { Team }
+  from "./entities/team/team.entity";
+import { Tag }
+  from "./entities/tag/tag.entity";
+import { Transaction }
+  from "./entities/transaction/transaction.entity";
 
 let repositories: Repositories | null = null;
 

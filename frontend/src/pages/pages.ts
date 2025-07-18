@@ -17,5 +17,6 @@ export const pages = {
   employees: "/employees",
   teams: "/teams",
   settings: "/settings",
-  orders: "/orders"
+  orders: "/orders",
+  register: "/register"
 };

@@ -15,6 +15,7 @@ import SettingsPage from './pages/Settings'
 import SingleEmployeePage from './pages/Employees/SingleEmployee'
 import LogoutPage from './pages/General/Logout'
 import SingleTeamPage from './pages/Teams/SingleTeam'
+import RegisterPage from './pages/General/Register'
 
 function App() {
 
@@ -36,6 +37,7 @@ function App() {
             <Route path={pages.profile} element={<ProfilePage/>}/>
             <Route path={pages.fourOFour} element={<FourOFour/>}/>
             <Route path={pages.logout} element={<LogoutPage/>}/>
+            <Route path={pages.register} element={<RegisterPage/>}/>
             <Route path="*" element={<Navigate to={pages.fourOFour} />} />
           </Routes>
         </div>

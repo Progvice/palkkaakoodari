@@ -1,5 +1,3 @@
-import { Request } from "express";
-
 export function requiredFields<T>
   (data: Partial<T>, requiredFields: string[]) : {status: boolean, missingFields: string[]} {
 

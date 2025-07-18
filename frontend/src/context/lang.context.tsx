@@ -2,12 +2,14 @@ import { createContext, ReactNode, useCallback, useContext, useEffect, useState 
 import en from "../lang/en";
 import fi from "../lang/fi";
 
+export type TFunction = (word: string, params?: (string|number)[]) => string;
 
 type PickableLanguages = "en" | "fi";
 
 type LangContextType = {
   setLang: (lang: PickableLanguages) => void,
   t: (word: string, params?: (string|number)[]) => string
+  lang: PickableLanguages,
 };
 
 type Languages = {
@@ -15,12 +17,12 @@ type Languages = {
   fi: Record<string, string>
 };
 
-const LangContext = createContext<LangContextType|undefined>(undefined);;
+const LangContext = createContext<LangContextType|undefined>(undefined);
 
 const languages : Languages = {en: en, fi: fi};
 
 export const LangProvider : React.FC<{children: ReactNode}> = ({children}) => {
-  const [lang, setLang] = useState<PickableLanguages>((localStorage.getItem("lang") as PickableLanguages) || "fi");
+  const [lang, setLang] = useState<PickableLanguages>((localStorage.getItem("lang") as PickableLanguages) || "en");
 
   useEffect(() => {
     if (lang) localStorage.setItem("lang", lang);
@@ -41,7 +43,7 @@ export const LangProvider : React.FC<{children: ReactNode}> = ({children}) => {
   }, [lang]);
 
   return (
-    <LangContext.Provider value={{setLang, t}}>{children}</LangContext.Provider>
+    <LangContext.Provider value={{setLang, t, lang}}>{children}</LangContext.Provider>
   )
 }
 

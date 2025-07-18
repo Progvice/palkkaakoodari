@@ -53,5 +53,11 @@ export default {
   noSkillsPicked: "Ei taitoja valittu",
   searchedTags: "Haetut taidot",
   noTagsSearched: "Taitoja ei ole haettu",
-  noMoreSkillsToSelect: "Taitoja ei löytynyt enempää"
+  noMoreSkillsToSelect: "Taitoja ei löytynyt enempää",
+  invalidEmail: "Virheellinen sähköposti",
+  passwordMinLength: "Salasanan tulee olla [$1] merkkiä pitkä",
+  passwordCapitalLetter: "Salasanassa tulee olla yksi iso kirjain",
+  passwordLowercaseLetter: "Salasanassa tulee olla yksi pieni kirjain",
+  passwordSpecialCharacter: "Salasanassa tulee olla yksi erikoismerkki",
+  businessIdInvalid: "Y-tunnus on väärässä formaatissa"
 };

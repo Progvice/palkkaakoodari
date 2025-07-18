@@ -2,25 +2,25 @@ import { Express } from "express";
 
 // ROUTE IMPORTS START
 // ADMIN routes
-import { tagsRoute } from "./routes/admin/tags";
-import { rolesRoute } from "./routes/admin/roles";
-import { employeesRoute as adminEmployeesRoute } from "./routes/admin/employees";
+import { tagsRoute } from "./entities/tag/tag.routes";
+import { rolesRoute } from "./entities/role/role.routes";
+// import { employeesRoute as adminEmployeesRoute } from "./routes/admin/employees";
 
 // AUTH routes
-import { accountsRoute } from "./routes/accounts";
-import { agreementsRoute } from "./routes/agreements";
-import { employeesRoute } from "./routes/employees";
-import { loginRoute } from "./routes/login";
-import { priceSuggestionsRoute } from "./routes/priceSuggestions";
-import { registerRoute } from "./routes/register";
-import { teamsRoute } from "./routes/teams";
-import { transactionsRoute } from "./routes/transactions";
+import { accountsRoute } from "./entities/account/account.routes";
+import { agreementsRoute } from "./entities/agreement/agreement.routes";
+import { employeesRoute } from "./entities/employee/employee.routes";
+import { loginRoute } from "./auth/login/login.routes";
+import { priceSuggestionsRoute } from "./entities/pricesuggestion/pricesuggestion.routes";
+import { registerRoute } from "./auth/register/register.routes";
+import { teamsRoute } from "./entities/team/team.routes";
+import { transactionsRoute } from "./entities/transaction/transaction.routes";
 
 // PUBLIC routes
 import { authMiddleWare } from "./middlewares/auth";
 import { adminMiddleWare } from "./middlewares/admin";
-import { accessTokenRoute } from "./routes/accesstoken";
-import { logoutRoute } from "./routes/logout";
+import { accessTokenRoute } from "./auth/accesstoken/accesstoken.routes";
+import { logoutRoute } from "./auth/logout/logout.routes";
 
 
 const publicRoute = "/api/public";
@@ -41,7 +41,7 @@ export const LoadRoutes = async (app: Express) => {
   ];
 
   // ADMIN routes
-  app.use(adminRoute + "/employees", adminMiddlewares, adminEmployeesRoute);
+  // app.use(adminRoute + "/employees", adminMiddlewares, adminEmployeesRoute);
   app.use(adminRoute + "/roles", adminMiddlewares, rolesRoute);
   app.use(adminRoute + "/tags", adminMiddlewares, tagsRoute);
 

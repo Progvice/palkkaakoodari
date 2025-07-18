@@ -1,12 +1,12 @@
-import type { Account } from "./entity/Account";
-import type { Agreement } from "./entity/Agreement";
+import type { Account } from "./account/account.entity";
+import type { Agreement } from "./entities/agreement/agreement.entity";
 import type { Employee } from "./entity/Employee";
-import type { PriceSuggestion } from "./entity/PriceSuggestion";
+import type { PriceSuggestion } from "./entities/pricesuggestion/pricesuggestion.entity";
 import type { DataSource, Repository } from "typeorm";
-import type { Role } from "./entity/Role";
-import type { Tag } from "./entity/Tag";
-import type { Team } from "./entity/Team";
-import type { Transaction } from "./entity/Transaction";
+import type { Role } from "./entities/role/role.entity";
+import type { Tag } from "./entities/tag/tag.entity";
+import type { Team } from "./team/team.entity";
+import type { Transaction } from "./entities/transaction/transaction.entity";
 import type * as core from "express-serve-static-core";
 import { Request } from "express";
 

@@ -1,71 +1,32 @@
+version: '3.9'
+
 services:
-  postgres:
-    hostname: postgres
-    container_name: postgres
-    image: postgres:alpine
-    restart: always
-    environment:
-      POSTGRES_USER: pk
-      POSTGRES_PASSWORD: pk
-      POSTGRES_DB: palkkaakoodari
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    ports:
-      - "5433:5432"
-    networks:
-      - e2e
-
-    volumes:
-      - pg_data:/var/lib/postgresql/data
-      - ./init-scripts:/docker-entrypoint-initdb.d
-
-  appserver:
-    hostname: appserver
-    container_name: appserver
-    image: registry.gitlab.com/buutti_ta_jkl_2025_green/palkkaakoodari:latest
-    healthcheck:
-      test: ["CMD", "wget", "-q", "-O", "-", "http://localhost:3000"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 10s
-    environment:
-      POSTGRES_HOST : "postgres"
-      POSTGRES_USER : "pk"
-      POSTGRES_PASSWORD : "pk"
-      POSTGRES_DB: "palkkaakoodari"
-      POSTGRES_PORT : 5433
-      PG_SSL : false
-      PORT : 3000
-      APPLICATION_MODE : "development"
-    working_dir: /app
-    command: ["node", "/app/backend/dist/index.js"]
+  app:
+    env_file:
+      - ./backend/.env.dev
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: palkkaakoodari_backend
     ports:
       - "3000:3000"
-    depends_on:
-      postgres:
-        condition: service_healthy
-    networks:
-      - e2e
-
-  playwright-tests:
-    hostname: playwright-tests
-    container_name: playwright-tests
-    image: mcr.microsoft.com/playwright:v1.50.1-jammy
-    working_dir: /app
+    environment:
+      - NODE_ENV=development
     volumes:
-      - ./e2e:/app
-    command: sh -c "sleep infinity"
+      - ./backend:/usr/src/app
+      - /usr/src/app/node_modules
     depends_on:
-      appserver:
-        condition: service_healthy
-    networks:
-      - e2e
+      - db
 
-networks:
-  e2e:
-    name: e2e
-    external: true
+  db:
+    env_file:
+      - ./backend/.env.dev
+    image: postgres:15
+    container_name: palkkaakoodari_postgres
+    ports:
+      - "${POSTGRES_PORT}:${POSTGRES_PORT}"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
